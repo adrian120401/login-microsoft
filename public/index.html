@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio</title>
+  </head>
+  <body>
+    <h1>Bienvenidos a la clase de Inicio con Microsoft</h1>
+
+    <div>
+      <h1>Bienvenido, <span id="user-name">...</span>!</h1>
+      <p>Email: <span id="user-email">...</span></p>
+    </div>
+
+    <script>
+      fetch('http://localhost:3000/auth/me', {
+        credentials: 'include',
+      })
+        .then((response) => {
+          if (response.status === 401) {
+            window.location.href = '/login';
+          } else {
+            return response.json();
+          }
+        })
+        .then((user) => {
+          if (user) {
+            document.getElementById('user-name').innerText =
+              user.name || 'Usuario';
+            document.getElementById('user-email').innerText =
+              user.email || 'Correo no disponible';
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching user data:', error);
+          alert('Error al cargar los datos del usuario.');
+        });
+    </script>
+  </body>
+</html>
